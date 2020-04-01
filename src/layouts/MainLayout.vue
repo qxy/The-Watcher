@@ -5,7 +5,13 @@
 				<div>TV Show Tracker</div>
 				<q-space />
 				<q-btn dense flat icon="minimize" @click="minimize" />
-				<q-btn dense flat icon="crop_square" @click="maximize" />
+				<q-btn
+					dense flat @click="toggleAoT"
+					:icon="alwaysOnTop ? 'radio_button_checked' : 'radio_button_unchecked'">
+					<q-tooltip :delay="500">
+						<span class="text-no-wrap">Always on top</span>
+					</q-tooltip>
+				</q-btn>
 				<q-btn dense flat icon="close" @click="closeApp" />
 			</q-bar>
 		</q-header>
@@ -19,28 +25,48 @@
 <script>
 export default {
 	name: 'DefaultLayout',
+	data: () => ({
+		bWindow: null,
+		alwaysOnTop: false
+	}),
 	methods: {
 		minimize() {
 			if (process.env.MODE === 'electron') {
-				this.$q.electron.remote.BrowserWindow.getFocusedWindow().minimize()
+				this.bWindow.minimize()
 			}
 		},
-		maximize() {
+		toggleAoT() {
 			if (process.env.MODE === 'electron') {
-				const win = this.$q.electron.remote.BrowserWindow.getFocusedWindow()
+				this.alwaysOnTop = !this.bWindow.isAlwaysOnTop()
+				this.bWindow.setAlwaysOnTop(this.alwaysOnTop)
 
-				if (win.isMaximized()) {
-					win.unmaximize()
-				} else {
-					win.maximize()
-				}
+				const waot = JSON.stringify({ state: this.alwaysOnTop })
+				window.localStorage.setItem('waot', waot)
 			}
 		},
 		closeApp() {
 			if (process.env.MODE === 'electron') {
-				this.$q.electron.remote.BrowserWindow.getFocusedWindow().close()
+				this.bWindow.close()
 			}
+		}
+	},
+	beforeMount() {
+		if (process.env.MODE === 'electron') {
+			this.bWindow = this.$q.electron.remote.BrowserWindow.getAllWindows()[0]
+		}
+	},
+	mounted() {
+		if (process.env.MODE === 'electron') {
+			const waot = JSON.parse(window.localStorage.getItem('waot')) || { state: false }
+			this.alwaysOnTop = waot.state
+			this.bWindow.setAlwaysOnTop(this.alwaysOnTop)
 		}
 	}
 }
 </script>
+
+<style>
+	body {
+		background: #f0f0f5;
+	}
+</style>
