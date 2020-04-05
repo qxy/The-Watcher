@@ -1,23 +1,20 @@
 <template>
 	<div class="show-number row q-gutter-x-xs">
 		<div class="col-auto">
-			<q-badge
-				:color="disable ? 'grey' : 'primary'"
-				:label="label"
-			/>
+			<q-badge :color="color" :label="label" />
 		</div>
 		<div class="col-auto">
 			<q-btn
-				 outline size="xs"
-				color="primary" icon="remove"
+				outline size="xs"
+				:color="color" icon="remove"
 				:disabled="disable || value == 1"
 				@click="$emit('input', value - 1)"
 			/>
 		</div>
 		<div class="col-auto">
 			<q-btn
-				 outline size="xs"
-				color="primary" icon="add"
+				outline size="xs"
+				:color="color" icon="add"
 				:disabled="disable || value == 99"
 				@click="$emit('input', value + 1)"
 			/>
@@ -26,8 +23,7 @@
 </template>
 
 <script>
-import { format } from 'quasar'
-const { pad } = format
+import format from 'src/format'
 
 export default {
 	name: 'ShowNumber',
@@ -46,8 +42,11 @@ export default {
 		}
 	},
 	computed: {
+		color() {
+			return (this.disable ? 'grey' : 'primary')
+		},
 		label() {
-			return `${this.prefix}${pad(this.value, 2)}`
+			return `${this.prefix}${format.number(this.value)}`
 		}
 	}
 }

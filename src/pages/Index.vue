@@ -1,18 +1,20 @@
 <template>
 	<q-page class="flex">
-		<show-list v-if="!sEdit"
-			:entries="sList"
-			@add-new="addNew"
-			@edit="edit"
-			@save="saveData"
-		/>
-		<show-edit v-else
-			:id="editId"
-			:data="sEdit"
-			@edit-save="editSave"
-			@edit-cancel="editCancel"
-			@edit-delete="editDelete"
-		/>
+		<q-slide-transition>
+			<show-list v-if="!sEdit"
+				:entries="sList"
+				@add-new="addNew"
+				@edit="edit"
+				@save="saveData"
+			/>
+			<show-edit v-else
+				:id="editId"
+				:data="sEdit"
+				@edit-save="editSave"
+				@edit-cancel="editCancel"
+				@edit-delete="editDelete"
+			/>
+		</q-slide-transition>
 	</q-page>
 </template>
 
@@ -33,7 +35,7 @@ export default {
 			this.editId = -1
 			this.sEdit = {
 				active: true,
-				name: '',
+				title: '',
 				season: 1,
 				episode: 1,
 				url: ''
@@ -55,6 +57,13 @@ export default {
 			else {
 				this.sList[this.editId] = this.sEdit
 			}
+
+			this.sList = this.sList.sort((a, b) => {
+				const t1 = a.title.toLowerCase()
+				const t2 = b.title.toLowerCase()
+				return (t1 > t2) ? 1 : (t2 > t1) ? -1 : 0
+			})
+
 			this.saveData()
 			this.editCancel()
 		},

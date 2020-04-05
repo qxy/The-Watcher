@@ -1,4 +1,5 @@
 import { app, BrowserWindow, nativeTheme } from 'electron'
+const windowStateKeeper = require('electron-window-state');
 
 try {
 	if (process.platform === 'win32' && nativeTheme.shouldUseDarkColors === true) {
@@ -15,14 +16,27 @@ if (process.env.PROD) {
 }
 
 let mainWindow
+const wd = process.env.PROD ? 0 : 250
 
 function createWindow() {
+	// Load the previous state with fallback to defaults
+	let mainWindowState = windowStateKeeper({
+		defaultWidth: 400 + wd,
+		defaultHeight: 600,
+		maximize: false,
+		fullScreen: false
+	});
 	/**
 	 * Initial window options
 	 */
 	mainWindow = new BrowserWindow({
-		width: 1000,
-		height: 600,
+		x: mainWindowState.x,
+		y: mainWindowState.y,
+		width: mainWindowState.width,
+		height: mainWindowState.height,
+		minWidth: 400 + wd,
+		minHeight: 600,
+		maxWidth: 600 + wd,
 		useContentSize: true,
 		webPreferences: {
 			// Change from /quasar.conf.js > electron > nodeIntegration;
@@ -40,6 +54,11 @@ function createWindow() {
 	mainWindow.on('closed', () => {
 		mainWindow = null
 	})
+
+	// Let us register listeners on the window, so we can update the state
+	// automatically (the listeners will be removed when the window is closed)
+	// and restore the maximized or full screen state
+	mainWindowState.manage(mainWindow);
 }
 
 app.on('ready', createWindow)

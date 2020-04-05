@@ -1,42 +1,47 @@
 <template>
-	<q-card class="show-edit col q-ma-md bg-grey-1">
+	<q-card class="show-edit col q-ma-sm bg-grey-1">
 		<q-form @submit="editSave">
 			<q-card-section class="row q-gutter-y-sm justify-between">
 				<q-input class="col-12"
-					outlined clearable
+					autofocus
+					dense outlined
 					label="Title"
-					v-model="data.title"
+					type="text"
+					v-model.trim="data.title"
 					:rules="[validate.required]"
 				/>
 				<q-input class="col-5"
-					outlined
+					dense outlined
 					label="Season"
 					type="number" min="1" max="99"
 					v-model="data.season"
 					:rules="[validate.required, validate.number]"
 				/>
 				<q-input class="col-5"
-					outlined
+					dense outlined
 					label="Episode"
 					type="number" min="1" max="99"
 					v-model="data.episode"
 					:rules="[validate.required, validate.number]"
 				/>
 				<q-input class="col-12"
-					outlined clearable
+					dense outlined
 					label="URL"
 					type="url"
-					hint=""
-					v-model="data.url"
+					:hint="formatURL"
+					v-model.trim="data.url"
 					:rules="[validate.required, validate.url]"
 				/>
-				<q-banner dense class="q-mt-sm bg-grey-2 shadow-1">
+				<q-banner dense class="col-12 q-mt-sm bg-grey-2 shadow-1">
 					<template v-slot:avatar>
-        				<q-icon name="info" color="primary" />
+        				<q-icon name="info" color="info" />
 					</template>
 					<div class="text-caption">
-						<p>use <b>{S##}</b> and <b>{E##}</b> to insert current season/episode</p>
-						<p>for example: <b>http://url.to/{S##}/{E##}</b> will be converted to <b>{{ exampleURL }}</b></p>
+						<p><b>Wildcards:</b></p>
+						<p><b>{T}</b> Title, spaces unchanged<br />
+						<b>{T+}</b> Title, spaces replaced with + signs<br />
+						<b>{S##}</b> current Season<br />
+						<b>{E##}</b> current Episode</p>
 					</div>
 				</q-banner>
 			</q-card-section>
@@ -78,8 +83,7 @@
 </template>
 
 <script>
-import { format } from 'quasar'
-const { pad } = format
+import format from 'src/format'
 
 export default {
 	name: 'ShowEdit',
@@ -102,8 +106,14 @@ export default {
 		confirm: null
 	}),
 	computed: {
+		formatURL() {
+			return (!this.data || !this.data.url.length)
+				? this.exampleURL
+				: format.url(this.data)
+		},
 		exampleURL() {
-			return `http://url.to/S${pad(this.data.season, 2)}/E${pad(this.data.episode, 2)}`
+			const ts = !this.data.title.length ? 'no+title' : '{T+}'
+			return format.url(this.data, `http(s)://example.url/${ts}/{S##}/{E##}`)
 		}
 	},
 	methods: {

@@ -1,12 +1,12 @@
 <template>
-	<div class="col q-pa-md">
+	<div class="col q-ma-sm">
 		<!-- ADD NEW BUTTON -->
 		<q-btn
 			outline rounded
 			icon="add_circle" color="primary" label="Add new"
 			@click="$emit('add-new')"
 		/>
-		<q-card class="q-mt-md bg-grey-1">
+		<q-card class="q-mt-sm bg-grey-1">
 			<q-banner dense class="bg-grey-2 shadow-1" v-if="!entries.length">
 				<template v-slot:avatar>
 					<q-icon name="info" color="primary" />

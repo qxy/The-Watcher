@@ -14,7 +14,7 @@
 				@click="$emit('edit')"
 			/>
 		</div>
-		<div class="col cursor-pointer">
+		<div class="title-link col cursor-pointer">
 			<div @click="openURL" :class="titleClass">
 				<span>{{ data.title }}</span>
 			</div>
@@ -40,9 +40,7 @@
 
 <script>
 import ShowNumber from 'components/ShowNumber'
-
-import { format } from 'quasar'
-const { pad } = format
+import format from 'src/format'
 
 export default {
 	name: 'ShowEntry',
@@ -63,14 +61,18 @@ export default {
 	methods: {
 		openURL() {
 			if (!this.data.active) return
-
-			const url = this.data.url
-				.replace(/{S##}/g, `S${pad(this.data.season, 2)}`)
-				.replace(/{E##}/g, `E${pad(this.data.episode, 2)}`)
-
+			const fURL = format.url(this.data)
+			const eURL = encodeURI(fURL)
 			const shell = require('electron').shell
-			shell.openExternal(url)
+			shell.openExternal(eURL)
+			// console.log(eURL)
 		}
 	}
 }
 </script>
+
+<style>
+	.title-link span:hover {
+		text-decoration: underline
+	}
+</style>
