@@ -1,5 +1,5 @@
 <template>
-	<q-card class="show-edit column bg-grey-1">
+	<q-card class="show-edit column q-pa-sm bg-grey-1">
 		<q-form @submit="editSave">
 			<q-card-section class="row q-gutter-y-sm justify-between">
 				<q-input class="col-12"
@@ -42,20 +42,36 @@
 						dense class="col-12 q-mt-sm bg-grey-4 shadow-1">
 						<div class="row text-caption">
 							<div class="col-3"><b>{T} {t}</b></div>
-							<div class="col-9">Title Case Unchanged / title lowercase; spaces unchanged (url encoded)</div>
+							<div class="col-9">
+								Title Case Unchanged / title lowercase
+								<q-icon name="arrow_forward" />
+								spaces unchanged (url encoded)
+							</div>
 							<div class="col-3"><b>{T+} {t+}</b></div>
-							<div class="col-9">Title Case Unchanged / title lowercase; spaces replaced with <b>+</b> signs</div>
+							<div class="col-9">
+								Title Case Unchanged / title lowercase
+								<q-icon name="arrow_forward" />
+								spaces replaced with <b>+</b> signs
+							</div>
 							<div class="col-3"><b>{S##} {s##}</b></div>
-							<div class="col-9">current Season number (with corresponding case)</div>
+							<div class="col-9">
+								current Season number
+								<q-icon name="arrow_forward" />
+								with corresponding case
+							</div>
 							<div class="col-3"><b>{E##} {e##}</b></div>
-							<div class="col-9">current Episode number (with corresponding case)</div>
+							<div class="col-9">
+								current Episode number
+								<q-icon name="arrow_forward" />
+								with corresponding case
+							</div>
 						</div>
 					</q-banner>
 				</q-slide-transition>
 			</q-card-section>
 			<q-separator />
 			<q-card-actions class="q-pa-md justify-between">
-				<div>
+				<transition name="fade" mode="out-in">
 					<q-btn-group v-if="!confirm">
 						<q-btn glossy
 							type="submit"
@@ -67,7 +83,7 @@
 							icon="cancel"
 							color="warning"
 							label="cancel"
-							@click="editCancel"
+							@click="goHome"
 						/>
 					</q-btn-group>
 					<q-banner v-else
@@ -77,7 +93,7 @@
 						</template>
 						<span>Click again to confirm delete!</span>
 					</q-banner>
-				</div>
+				</transition>
 				<q-btn glossy
 					:disabled="id == -1"
 					icon="delete"
@@ -91,21 +107,14 @@
 </template>
 
 <script>
+import store from 'src/store'
 import format from 'src/format'
 
 export default {
 	name: 'ShowEdit',
-	props: {
-		id: {
-			type: Number,
-			required: true
-		},
-		data: {
-			type: Object,
-			required: true
-		}
-	},
 	data: () => ({
+		id: -1,
+		data: null,
 		validate: {
 			required: val => !!val || 'Field is required',
 			number: val => (val > 0 && val < 100) || 'Must be between 1 & 99',
@@ -123,10 +132,8 @@ export default {
 	},
 	methods: {
 		editSave() {
-			this.$emit('edit-save')
-		},
-		editCancel() {
-			this.$emit('edit-cancel')
+			store.setData(this.id, this.data)
+			this.goHome()
 		},
 		editDelete() {
 			if (!this.confirm) {
@@ -136,9 +143,19 @@ export default {
 			}
 			else {
 				clearTimeout(this.confirm)
-				this.$emit('edit-delete')
+				store.deleteData(this.id)
+				this.goHome()
 			}
+		},
+		goHome() {
+			this.$router.replace('/')
 		}
+	},
+	created() {
+		const { id, data } = store.getData(this.$route.params.id)
+
+		this.id = id
+		this.data = { ...data }
 	}
 }
 </script>
