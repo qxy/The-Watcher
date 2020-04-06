@@ -2,6 +2,7 @@
 	<div class="row items-center q-pa-sm q-gutter-x-sm">
 		<div class="col-auto">
 			<q-checkbox
+				color="secondary"
 				dense size="sm"
 				v-model="data.active"
 				@input="$emit('save')"

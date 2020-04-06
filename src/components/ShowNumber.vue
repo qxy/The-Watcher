@@ -46,7 +46,7 @@ export default {
 	},
 	computed: {
 		color() {
-			return (this.disable ? 'grey' : 'primary')
+			return (this.disable ? 'grey' : 'secondary')
 		},
 		label() {
 			return `${this.prefix}${format.number(this.value)}`
