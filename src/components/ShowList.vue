@@ -1,7 +1,7 @@
 <template>
-	<div class="col q-ma-sm">
+	<div class="col">
 		<!-- ADD NEW BUTTON -->
-		<q-btn
+		<q-btn class="full-width"
 			outline rounded
 			icon="add_circle" color="primary" label="Add new"
 			@click="$emit('add-new')"

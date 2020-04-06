@@ -1,7 +1,10 @@
 <template>
-	<div class="show-number row q-gutter-x-xs">
+	<div class="show-number row q-gutter-x-none items-center">
 		<div class="col-auto">
-			<q-badge :color="color" :label="label" />
+			<q-chip dense square
+				:color="color" text-color="white">
+				{{ label }}
+			</q-chip>
 		</div>
 		<div class="col-auto">
 			<q-btn
@@ -12,7 +15,7 @@
 			/>
 		</div>
 		<div class="col-auto">
-			<q-btn
+			<q-btn class="q-ml-xs"
 				outline size="xs"
 				:color="color" icon="add"
 				:disabled="disable || value == 99"

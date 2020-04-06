@@ -7,7 +7,7 @@
 				<q-btn dense flat icon="minimize" @click="minimize" />
 				<q-btn
 					dense flat @click="toggleAoT"
-					:icon="alwaysOnTop ? 'radio_button_checked' : 'radio_button_unchecked'">
+					:icon="iconAoT">
 					<q-tooltip :delay="500">
 						<span class="text-no-wrap">Always on top</span>
 					</q-tooltip>
@@ -29,6 +29,11 @@ export default {
 		bWindow: null,
 		alwaysOnTop: false
 	}),
+	computed: {
+		iconAoT() {
+			return (this.alwaysOnTop ? 'radio_button_checked' : 'radio_button_unchecked')
+		}
+	},
 	methods: {
 		minimize() {
 			if (process.env.MODE === 'electron') {
@@ -64,9 +69,3 @@ export default {
 	}
 }
 </script>
-
-<style>
-	body {
-		background: #f0f0f5;
-	}
-</style>

@@ -1,5 +1,5 @@
 <template>
-	<q-page class="flex">
+	<q-page class="flex q-pa-sm">
 		<q-slide-transition>
 			<show-list v-if="!sEdit"
 				:entries="sList"

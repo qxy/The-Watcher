@@ -14,10 +14,10 @@
 				@click="$emit('edit')"
 			/>
 		</div>
-		<div class="title-link col cursor-pointer">
-			<div @click="openURL" :class="titleClass">
-				<span>{{ data.title }}</span>
-			</div>
+		<div class="title-link col">
+			<span :class="titleClass" @click="openURL">
+				{{ data.title }}
+			</span>
 		</div>
 		<div class="col-auto">
 			<show-number
@@ -55,7 +55,7 @@ export default {
 		titleClass() {
 			return !this.data.active
 				? 'text-grey cursor-not-allowed'
-				: 'text-black cursor-pointer'
+				: 'text-black cursor-pointer text-link'
 		}
 	},
 	methods: {
@@ -72,7 +72,7 @@ export default {
 </script>
 
 <style>
-	.title-link span:hover {
+	.title-link span.text-link:hover {
 		text-decoration: underline
 	}
 </style>

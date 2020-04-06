@@ -16,13 +16,13 @@ if (process.env.PROD) {
 }
 
 let mainWindow
-const wd = process.env.PROD ? 0 : 250
+const wd = process.env.PROD ? 0 : 240
 
 function createWindow() {
 	// Load the previous state with fallback to defaults
 	let mainWindowState = windowStateKeeper({
-		defaultWidth: 400 + wd,
-		defaultHeight: 600,
+		defaultWidth: 420 + wd,
+		defaultHeight: 640,
 		maximize: false,
 		fullScreen: false
 	});
@@ -34,9 +34,9 @@ function createWindow() {
 		y: mainWindowState.y,
 		width: mainWindowState.width,
 		height: mainWindowState.height,
-		minWidth: 400 + wd,
-		minHeight: 600,
-		maxWidth: 600 + wd,
+		minWidth: 420 + wd,
+		minHeight: 240,
+		maxWidth: 640 + wd,
 		useContentSize: true,
 		webPreferences: {
 			// Change from /quasar.conf.js > electron > nodeIntegration;

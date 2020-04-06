@@ -1,5 +1,5 @@
 <template>
-	<q-card class="show-edit col q-ma-sm bg-grey-1">
+	<q-card class="show-edit column bg-grey-1">
 		<q-form @submit="editSave">
 			<q-card-section class="row q-gutter-y-sm justify-between">
 				<q-input class="col-12"
@@ -30,37 +30,54 @@
 					type="url"
 					:hint="formatURL"
 					v-model.trim="data.url"
-					:rules="[validate.required, validate.url]"
-				/>
-				<q-banner dense class="col-12 q-mt-sm bg-grey-2 shadow-1">
-					<template v-slot:avatar>
-        				<q-icon name="info" color="info" />
+					:rules="[validate.required, validate.url]">
+					<template v-slot:append>
+						<q-btn @click="showHelp = !showHelp"
+							round dense flat color="primary" icon="help"
+						/>
 					</template>
-					<div class="text-caption">
-						<p><b>Wildcards:</b></p>
-						<p><b>{T}</b> Title, spaces unchanged<br />
-						<b>{T+}</b> Title, spaces replaced with + signs<br />
-						<b>{S##}</b> current Season<br />
-						<b>{E##}</b> current Episode</p>
-					</div>
-				</q-banner>
+				</q-input>
+				<q-slide-transition :duration="100">
+					<q-banner v-if="showHelp"
+						dense class="col-12 q-mt-sm bg-grey-4 shadow-1">
+						<div class="row text-caption">
+							<div class="col-3"><b>{T} {t}</b></div>
+							<div class="col-9">Title Case Unchanged / title lowercase; spaces unchanged (url encoded)</div>
+							<div class="col-3"><b>{T+} {t+}</b></div>
+							<div class="col-9">Title Case Unchanged / title lowercase; spaces replaced with <b>+</b> signs</div>
+							<div class="col-3"><b>{S##} {s##}</b></div>
+							<div class="col-9">current Season number (with corresponding case)</div>
+							<div class="col-3"><b>{E##} {e##}</b></div>
+							<div class="col-9">current Episode number (with corresponding case)</div>
+						</div>
+					</q-banner>
+				</q-slide-transition>
 			</q-card-section>
 			<q-separator />
 			<q-card-actions class="q-pa-md justify-between">
-				<q-btn-group>
-					<q-btn glossy
-						type="submit"
-						icon="save"
-						color="positive"
-						label="save"
-					/>
-					<q-btn glossy
-						icon="cancel"
-						color="warning"
-						label="cancel"
-						@click="editCancel"
-					/>
-				</q-btn-group>
+				<div>
+					<q-btn-group v-if="!confirm">
+						<q-btn glossy
+							type="submit"
+							icon="save"
+							color="positive"
+							label="save"
+						/>
+						<q-btn glossy
+							icon="cancel"
+							color="warning"
+							label="cancel"
+							@click="editCancel"
+						/>
+					</q-btn-group>
+					<q-banner v-else
+						dense class="q-mt-none q-py-xs bg-negative text-white shadow-1">
+						<template v-slot:avatar>
+							<q-icon name="warning" color="white" />
+						</template>
+						<span>Click again to confirm delete!</span>
+					</q-banner>
+				</div>
 				<q-btn glossy
 					:disabled="id == -1"
 					icon="delete"
@@ -69,15 +86,6 @@
 					@click="editDelete"
 				/>
 			</q-card-actions>
-			<q-card-section>
-				<q-banner v-if="!!confirm"
-					dense class="q-mt-none bg-grey-2 text-negative shadow-1">
-					<template v-slot:avatar>
-        				<q-icon name="warning" color="negative" />
-					</template>
-					<span>Click again to confirm delete!</span>
-				</q-banner>
-			</q-card-section>
 		</q-form>
 	</q-card>
 </template>
@@ -103,17 +111,14 @@ export default {
 			number: val => (val > 0 && val < 100) || 'Must be between 1 & 99',
 			url: val => /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.{}\#]+$/gm.test(val) || 'Should match an URL'
 		},
-		confirm: null
+		confirm: null,
+		showHelp: false
 	}),
 	computed: {
 		formatURL() {
 			return (!this.data || !this.data.url.length)
-				? this.exampleURL
+				? 'http(s)://example.url/{t+}/{s##}{e##}'
 				: format.url(this.data)
-		},
-		exampleURL() {
-			const ts = !this.data.title.length ? 'no+title' : '{T+}'
-			return format.url(this.data, `http(s)://example.url/${ts}/{S##}/{E##}`)
 		}
 	},
 	methods: {
@@ -137,9 +142,3 @@ export default {
 	}
 }
 </script>
-
-<style>
-	.show-edit .q-banner p {
-		margin: 0 0 5px 0 !important
-	}
-</style>
