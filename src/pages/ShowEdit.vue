@@ -1,5 +1,5 @@
 <template>
-	<q-card class="show-edit column q-pa-sm bg-grey-1">
+	<q-card class="show-edit column q-ma-sm bg-grey-1">
 		<q-form @submit="editSave">
 			<q-card-section class="row q-gutter-y-sm justify-between">
 				<q-input class="col-12"
