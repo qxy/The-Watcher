@@ -91,8 +91,8 @@ module.exports = function (ctx) {
 			workboxPluginMode: 'GenerateSW', // 'GenerateSW' or 'InjectManifest'
 			workboxOptions: {}, // only for GenerateSW
 			manifest: {
-				name: 'TVST',
-				short_name: 'TVST',
+				name: 'The Watcher',
+				short_name: 'TW',
 				description: 'TV Show Tracker App',
 				display: 'standalone',
 				orientation: 'portrait',
@@ -159,7 +159,8 @@ module.exports = function (ctx) {
 			builder: {
 				// https://www.electron.build/configuration/configuration
 
-				appId: 'tvst'
+				appId: 'com.electron.thewatcher',
+				namproductName: 'The Watcher'
 			},
 
 			// More info: https://quasar.dev/quasar-cli/developing-electron-apps/node-integration

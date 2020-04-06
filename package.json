@@ -1,11 +1,11 @@
 {
-	"name": "tvst",
-	"version": "0.0.2",
+	"name": "the_watcher",
+	"version": "1.0.0",
 	"description": "TV Show Tracker App",
-	"productName": "TVST",
+	"productName": "The Watcher",
 	"cordovaId": "org.cordova.quasar.app",
 	"capacitorId": "",
-	"author": "Krisztián Gesztiványi <qxy@qxy.hu>",
+	"author": "QXY^iR",
 	"private": true,
 	"scripts": {
 		"dev": "quasar dev -m electron",

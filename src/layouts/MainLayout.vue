@@ -5,7 +5,7 @@
 				<q-btn dense flat icon="menu" :disable="!menuEnable">
 					<app-menu :items="menuItems" />
 				</q-btn>
-				<div class="col text-center text-overline">TV Show Tracker</div>
+				<div class="col text-center text-overline">The Watcher</div>
 				<q-space />
 				<q-btn dense flat icon="minimize" @click="minimize" />
 				<q-btn

@@ -6,7 +6,7 @@
 				<q-separator v-if="i > 0" />
 				<q-item clickable @click="item.method">
 					<q-item-section avatar>
-						<q-icon color="primary" :name="item.icon" />
+						<q-icon color="accent" :name="item.icon" />
 					</q-item-section>
 					<q-item-section class="q-pr-lg">
 						<q-item-label>{{ item.label }}</q-item-label>
@@ -16,7 +16,7 @@
 			<q-separator />
 			<q-item dense class="bg-grey-8 text-white text-caption">
 				<q-item-section avatar>
-					<q-icon name="info" size="xs" />
+					<q-icon name="cake" size="xs" />
 				</q-item-section>
 				<q-item-section class="q-pr-lg">
 					<q-item-label>V {{ version }}</q-item-label>
