@@ -2,7 +2,10 @@
 	<q-layout view="hHh lpr fFf">
 		<q-header elevated>
 			<q-bar class="q-electron-drag">
-				<div>TV Show Tracker</div>
+				<q-btn dense flat icon="menu" :disable="!menuEnable">
+					<app-menu :items="menuItems" />
+				</q-btn>
+				<div class="col text-center text-overline">TV Show Tracker</div>
 				<q-space />
 				<q-btn dense flat icon="minimize" @click="minimize" />
 				<q-btn
@@ -25,18 +28,71 @@
 </template>
 
 <script>
+import AppMenu from 'components/AppMenu'
+const { dialog } = require('electron').remote
+import store from 'src/store'
+
 export default {
 	name: 'DefaultLayout',
+	components: { AppMenu },
 	data: () => ({
 		bWindow: null,
-		alwaysOnTop: false
+		alwaysOnTop: false,
+		menuItems: [],
+		fileFilter: [
+			{ name: 'JSON', extensions: ['json'] }
+		]
 	}),
 	computed: {
+		menuEnable() {
+			return (this.$route.name == 'ShowList')
+		},
 		iconAoT() {
 			return (this.alwaysOnTop ? 'radio_button_checked' : 'radio_button_unchecked')
 		}
 	},
 	methods: {
+		// menu actions
+		editNew() {
+			this.$router.replace('edit/new')
+		},
+		importList() {
+			const options = {
+				buttonLabel: 'Import',
+				properties: ['openFile'],
+				filters: this.fileFilter
+			}
+			dialog.showOpenDialog(this.bWindow, options)
+				.then(result => {
+					if (result.canceled || !result.filePaths.length) return
+
+					const fileName = result.filePaths[0]
+					const err = store.importList(fileName)
+					// console.log(fileName)
+					console.log(err)
+				}).catch(err => {
+					console.log(err)
+				})
+		},
+		exportList() {
+			const options = {
+				buttonLabel: 'Export',
+				properties: ['createDirectory'],
+				filters: this.fileFilter
+			}
+			dialog.showSaveDialog(this.bWindow, options)
+				.then(result => {
+					if (result.canceled || !result.filePath) return
+
+					const fileName = result.filePath
+					const err = store.exportList(fileName)
+					// console.log(fileName)
+					console.log(err)
+				}).catch(err => {
+					console.log(err)
+				})
+		},
+		// window control
 		minimize() {
 			if (process.env.MODE === 'electron') {
 				this.bWindow.minimize()
@@ -61,6 +117,12 @@ export default {
 		if (process.env.MODE === 'electron') {
 			this.bWindow = this.$q.electron.remote.BrowserWindow.getAllWindows()[0]
 		}
+
+		this.menuItems = [
+			{ icon: 'post_add', label: 'Add new', method: this.editNew },
+			{ icon: 'format_indent_increase', label: 'Import list', method: this.importList },
+			{ icon: 'format_indent_decrease', label: 'Export list', method: this.exportList }
+		]
 	},
 	mounted() {
 		if (process.env.MODE === 'electron') {

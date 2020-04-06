@@ -1,3 +1,4 @@
+import fs from 'fs'
 
 export default {
 
@@ -5,6 +6,36 @@ export default {
 		showList: []
 	},
 
+	importList(fileName) {
+		try {
+			const jsonData = fs.readFileSync(fileName)
+			const data = JSON.parse(jsonData)
+			// clear array!
+			while (!!this.state.showList.pop());
+			// import data
+			data.forEach(sData => {
+				sData.season *= 1
+				sData.episode *= 1
+				this.state.showList.push(sData)
+			})
+			this.sortList()
+			this.saveData()
+			return false
+		}
+		catch(e) {
+			return e.message
+		}
+	},
+	exportList(fileName) {
+		try {
+			const jsonData = JSON.stringify(this.state.showList)
+			fs.writeFileSync(fileName, jsonData)
+			return false
+		}
+		catch(e) {
+			return e.message
+		}
+	},
 	sortList() {
 		this.state.showList = this.state.showList.sort((a, b) => {
 			const t1 = a.title.toLowerCase()
