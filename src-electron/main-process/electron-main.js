@@ -35,7 +35,7 @@ function createWindow() {
 		width: mainWindowState.width,
 		height: mainWindowState.height,
 		minWidth: 420 + wd,
-		minHeight: 240,
+		minHeight: 140,
 		maxWidth: 640 + wd,
 		useContentSize: true,
 		webPreferences: {
