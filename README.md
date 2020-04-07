@@ -2,17 +2,24 @@
 
 TV Show Tracker App
 
-## Install the dependencies
+------------
+
+## License
+
+[MIT](http://opensource.org/licenses/MIT)
+Copyright (c) 2020, QXY^iR
+
+------------
+
+#### Install the dependencies
 ```bash
 npm install
 ```
-
-### Start the app in development mode (hot-code reloading, error reporting, etc.)
+#### Start the app in development mode
 ```bash
 npm run dev
 ```
-
-### Build the app for production
+#### Build the app for production
 ```bash
 npm run build
 ```
