@@ -160,7 +160,7 @@ module.exports = function (ctx) {
 				// https://www.electron.build/configuration/configuration
 
 				appId: 'com.electron.thewatcher',
-				namproductName: 'The Watcher'
+				productName: 'The Watcher'
 			},
 
 			// More info: https://quasar.dev/quasar-cli/developing-electron-apps/node-integration
