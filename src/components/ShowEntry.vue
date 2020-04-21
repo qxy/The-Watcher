@@ -16,7 +16,7 @@
 			/>
 		</div>
 		<div class="title-link col">
-			<span :class="titleClass" @click="openURL">
+			<span :class="titleClass" @click="$emit('open-url')">
 				{{ data.title }}
 			</span>
 		</div>
@@ -41,7 +41,6 @@
 
 <script>
 import ShowNumber from 'components/ShowNumber'
-import format from 'src/format'
 
 export default {
 	name: 'ShowEntry',
@@ -57,16 +56,6 @@ export default {
 			return !this.data.active
 				? 'text-grey cursor-not-allowed'
 				: 'text-black cursor-pointer text-link'
-		}
-	},
-	methods: {
-		openURL() {
-			if (!this.data.active) return
-			const fURL = format.url(this.data)
-			const eURL = encodeURI(fURL)
-			const shell = require('electron').shell
-			shell.openExternal(eURL)
-			// console.log(eURL)
 		}
 	}
 }
