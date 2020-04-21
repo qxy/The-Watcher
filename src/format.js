@@ -8,8 +8,8 @@ export default {
 	url(data, url) {
 		if (!data) return ''
 		return (url || data.url || '')
-		.replace(/{T}/g, data.title)
-		.replace(/{t}/g, data.title.toLowerCase())
+			.replace(/{T}/g, data.title)
+			.replace(/{t}/g, data.title.toLowerCase())
 			.replace(/{T\+}/g, data.title.replace(/\s+/g, '+'))
 			.replace(/{t\+}/g, data.title.toLowerCase().replace(/\s+/g, '+'))
 			.replace(/{S##}/g, `S${this.number(data.season)}`)
