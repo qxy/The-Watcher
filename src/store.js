@@ -23,7 +23,7 @@ export default {
 			return false
 		}
 		catch(e) {
-			return e.message
+			return `Import failed: ${e.message}`
 		}
 	},
 	exportList(fileName) {
@@ -33,7 +33,7 @@ export default {
 			return false
 		}
 		catch(e) {
-			return e.message
+			return `Export failed: ${e.message}`
 		}
 	},
 	sortList() {

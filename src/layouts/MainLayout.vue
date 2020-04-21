@@ -20,6 +20,17 @@
 		</q-header>
 
 		<q-page-container>
+			<!-- ERROR MESSAGE -->
+			<q-slide-transition :duration="100">
+				<q-banner v-if="!!errorMsg"
+					dense class="bg-negative text-white shadow-1">
+					<template v-slot:avatar>
+						<q-icon name="error" color="white" />
+					</template>
+					<span>{{ errorMsg }}</span>
+				</q-banner>
+			</q-slide-transition>
+			<!-- PAGE CONTENT -->
 			<transition name="fade" mode="out-in">
 				<router-view />
 			</transition>
@@ -41,8 +52,16 @@ export default {
 		menuItems: [],
 		fileFilter: [
 			{ name: 'JSON', extensions: ['json'] }
-		]
+		],
+		errorMsg: false
 	}),
+	watch: {
+		errorMsg(newVal) {
+			if (!!newVal) {
+				setTimeout(() => this.errorMsg = false, 5000)
+			}
+		}
+	},
 	computed: {
 		menuEnable() {
 			return (this.$route.name == 'ShowList')
@@ -67,11 +86,9 @@ export default {
 					if (result.canceled || !result.filePaths.length) return
 
 					const fileName = result.filePaths[0]
-					const err = store.importList(fileName)
-					// console.log(fileName)
-					console.log(err)
+					this.errorMsg = store.importList(fileName)
 				}).catch(err => {
-					console.log(err)
+					this.errorMsg = err
 				})
 		},
 		exportList() {
@@ -85,11 +102,9 @@ export default {
 					if (result.canceled || !result.filePath) return
 
 					const fileName = result.filePath
-					const err = store.exportList(fileName)
-					// console.log(fileName)
-					console.log(err)
+					this.errorMsg = store.exportList(fileName)
 				}).catch(err => {
-					console.log(err)
+					this.errorMsg = err
 				})
 		},
 		// window control
