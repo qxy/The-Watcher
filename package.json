@@ -1,6 +1,6 @@
 {
 	"name": "the_watcher",
-	"version": "1.0.0",
+	"version": "1.1.0",
 	"description": "TV Show Tracker App",
 	"productName": "The Watcher",
 	"cordovaId": "org.cordova.quasar.app",
@@ -21,7 +21,7 @@
 		"@quasar/quasar-app-extension-icon-genie": "^1.1.3",
 		"devtron": "^1.4.0",
 		"electron": "^8.2.0",
-		"electron-builder": "^21.2.0",
+		"electron-builder": "^22.5.1",
 		"electron-debug": "^3.0.1",
 		"electron-devtools-installer": "^2.2.4",
 		"electron-packager": "^14.2.1"
