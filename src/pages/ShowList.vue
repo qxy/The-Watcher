@@ -8,8 +8,8 @@
 				</template>
 				<span>List is empty.</span>
 			</q-banner>
-			<div v-for="(data, id) in sList" :key="id">
-				<q-separator v-if="id > 0" />
+			<div v-for="(data, id) in sList" :key="id" class="show-entry">
+				<q-separator />
 				<show-entry
 					:data="data"
 					@edit="editData(id)"
@@ -71,3 +71,15 @@ export default {
 	}
 }
 </script>
+
+<style>
+	.show-entry {
+		transition: background 0.75s;
+		background: rgb(250, 250, 250)
+	}
+
+	.show-entry:hover {
+		transition: background 0.25s;
+		background: rgb(240, 240, 240)
+	}
+</style>
